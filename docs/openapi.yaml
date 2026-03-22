@@ -1,0 +1,108 @@
+openapi: 3.0.0
+info:
+  title: Aroha Health - CTA API using GO
+  version: 1.0.0
+  description: API to handle website CTA requests
+
+paths:
+  /api/v1/cta:
+    post:
+      summary: Submit CTA request
+      description: Handles Book Demo, Talk to Sales, Career, and Contact requests
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - type
+                - name
+                - email
+                - phone
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - book_demo
+                    - talk_to_sales
+                    - career
+                    - contact
+                  example: book_demo
+
+                name:
+                  type: string
+                  example: Jatin Poriya
+
+                email:
+                  type: string
+                  format: email
+                  example: jatinporiya914@gmail.com
+
+                phone:
+                  type: string
+                  example: "7201840095"
+
+                message:
+                  type: string
+                  example: I would like to book a demo.
+
+      responses:
+        "200":
+          description: Request processed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Request Processed Successfully!
+                  data:
+                    type: object
+
+        "400":
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: Invalid Input Data! Cannot Process Request.
+
+        "405":
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: Method not allowed. Use POST.
+
+        "422":
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: Invalid type. Allowed= book_demo, talk_to_sales, career, contact
